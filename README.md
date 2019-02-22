@@ -13,7 +13,9 @@ and Flask-GoogleLogin
 use these commands:
 
 `pip install Flask`
+
 `pip install SQLAlchemy`
+
 `pip install Flask-GoogleLogin`
 
 ## Running the app
