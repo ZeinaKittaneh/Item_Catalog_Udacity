@@ -396,13 +396,14 @@ def editCategoryItem(category_name, item_name):
             editedItem.description = request.form['description']
         if request.form['category_id']:
             category_selected = session.query(Category).filter_by(
-                name=urllib2.unquote(request.form['category_id'])).one()
-            editedItem.category_id = category.id
+                id=urllib2.unquote(request.form['category_id'])).one()
+            editedItem.category_id = category_selected.id
         session.add(editedItem)
         session.commit()
 
-        return redirect(url_for('showItems',
-                        category_id=editedItem.category_id))
+        return redirect(url_for('showItem',
+                        category_name=category_selected.name,
+                        item_name=editedItem.name))
     else:
         categories = session.query(Category).all()
         return render_template('edit-item.html',
