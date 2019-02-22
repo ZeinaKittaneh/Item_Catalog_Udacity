@@ -7,6 +7,7 @@ from sqlalchemy import create_engine
 
 Base = declarative_base()
 
+
 class User(Base):
     __tablename__ = 'user'
 
@@ -42,7 +43,7 @@ class CategoryItem(Base):
     category = relationship(Category)
     user_id = Column(Integer, ForeignKey('user.id'), nullable=False)
     user = relationship(User)
-    
+
     @property
     def serialize(self):
         """Return object data in easily serializeable format"""
