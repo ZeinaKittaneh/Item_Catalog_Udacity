@@ -29,6 +29,9 @@ use these commands:
 3. Run main python project
 `python catalog.py`
 
+4. through your server, access port 8000 to see the application running:
+example: `http://localhost:8000/catalog/`
+
 ## License
 This project is licensed under the MIT License - see the [LICENSE](https://github.com/arrickx/Item-Catalog-Application/blob/master/LICENSE) file for details.
 
