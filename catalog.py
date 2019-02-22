@@ -1,5 +1,6 @@
 import os
-from flask import Flask, render_template, request, redirect, jsonify, url_for, flash
+from flask import Flask, render_template, request, redirect
+from flask import jsonify, url_for, flash
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from database_setup import Base, Category, CategoryItem, User
@@ -17,7 +18,7 @@ import string
 from functools import wraps
 
 engine = create_engine('sqlite:///categories.db',
-                        connect_args={'check_same_thread' :False})
+                       connect_args={'check_same_thread': False})
 Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
 session = DBSession()
@@ -27,6 +28,7 @@ app = Flask(__name__)
 CLIENT_ID = json.loads(
     open('client_secrets.json', 'r').read())['web']['client_id']
 APPLICATION_NAME = "catalog app"
+
 
 # Create anti-forgery state token
 @app.route('/login')
@@ -47,7 +49,6 @@ def fbconnect():
     access_token = request.data
     print "access token received %s " % access_token
 
-
     app_id = json.loads(open('fb_client_secrets.json', 'r').read())[
         'web']['app_id']
     app_secret = json.loads(
@@ -56,7 +57,6 @@ def fbconnect():
         app_id, app_secret, access_token)
     h = httplib2.Http()
     result = h.request(url, 'GET')[1]
-
 
     # Use token to get user info from API
     userinfo_url = "https://graph.facebook.com/v2.8/me"
@@ -115,10 +115,10 @@ def fbdisconnect():
     facebook_id = login_session['facebook_id']
     # The access token must me included to successfully logout
     access_token = login_session['access_token']
-    url = 'https://graph.facebook.com/%s/permissions?access_token=%s' % (facebook_id,access_token)
+    url = 'https://graph.facebook.com/%s/permissions?access_token=%s' % (facebook_id, access_token)
     h = httplib2.Http()
     result = h.request(url, 'DELETE')[1]
-    flash ("you have been logged out")
+    flash("you have been logged out")
 
 
 @app.route('/gconnect', methods=['POST'])
@@ -236,6 +236,7 @@ def getUserID(email):
     except:
         return None
 
+
 # Disconnect based on provider
 @app.route('/disconnect')
 def disconnect():
@@ -277,9 +278,12 @@ def gdisconnect():
         response.headers['Content-Type'] = 'application/json'
         return response
     else:
-        response = make_response(json.dumps('Failed to revoke token for given user.', 400))
+        response = make_response(json.dumps(
+                                 'Failed to revoke token for given user.', 400)
+                                 )
         response.headers['Content-Type'] = 'application/json'
         return response
+
 
 # JSON Endpoints:
 # Display all categories in json:
@@ -287,6 +291,7 @@ def gdisconnect():
 def categoriesJSON():
     categories = session.query(Category).all()
     return jsonify(categories=[c.serialize for c in categories])
+
 
 # Display information about a category_all items
 @app.route('/catalog/<string:category_name>/items/json')
@@ -296,11 +301,13 @@ def categoryItemsJSON(category_name):
         category_id=category.id).all()
     return jsonify(CategoryItems=[i.serialize for i in items])
 
+
 # Display information about an item
 @app.route('/catalog/<string:item_name>/json')
 def itemJSON(item_name):
     item = session.query(CategoryItem).filter_by(name=item_name).one()
     return jsonify(item=item.serialize)
+
 
 def login_required(func):
     @wraps(func)
@@ -312,6 +319,7 @@ def login_required(func):
             return redirect('/login')
     return decorated_function
 
+
 # Show all categories
 @app.route('/')
 @app.route('/catalog/')
@@ -321,7 +329,7 @@ def showCategories():
         CategoryItem.created_at.desc()).limit(10).all()
     # return "This page will show all my categories"
     return render_template('allCategories.html', categories=categories
-        , latest_items=latest_items)
+                           , latest_items=latest_items)
 
 
 # Show a category items
@@ -334,7 +342,7 @@ def showItems(category_name):
     items = session.query(CategoryItem).filter_by(
         category_id=category.id).all()
     return render_template('category-items.html', items=items,
-        categories=categories, category=category)
+                           categories=categories, category=category)
 
 
 # Show item description
@@ -345,7 +353,8 @@ def showItem(category_name, item_name):
     category = session.query(Category).filter_by(
         id=item.category_id).one()
     return render_template('item-description.html', item=item,
-        category_name=category.name)
+                           category_name=category.name)
+
 
 # Create a new category item
 @app.route('/catalog/new', methods=['GET', 'POST'])
@@ -353,10 +362,10 @@ def showItem(category_name, item_name):
 def newCategoryItem():
     if request.method == 'POST':
         newItem = CategoryItem(name=request.form['name'],
-            description=request.form['description'],
-            category_id=request.form['category_id'],
-            created_at=datetime.datetime.now(),
-            user_id=login_session['user_id'])
+                               description=request.form['description'],
+                               category_id=request.form['category_id'],
+                               created_at=datetime.datetime.now(),
+                               user_id=login_session['user_id'])
         session.add(newItem)
         session.commit()
         category = session.query(Category).filter_by(
@@ -393,12 +402,12 @@ def editCategoryItem(category_name, item_name):
         session.commit()
 
         return redirect(url_for('showItems',
-            category_id=editedItem.category_id))
+                        category_id=editedItem.category_id))
     else:
         categories = session.query(Category).all()
         return render_template('edit-item.html',
-            category_id=editedItem.category_id,
-            categories=categories, item=editedItem)
+                               category_id=editedItem.category_id,
+                               categories=categories, item=editedItem)
 
     # return 'This page is for editing item %s' % item_id
 
