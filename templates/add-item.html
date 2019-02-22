@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="author" content="Zeina Kittaneh">
+
+    <title>Home</title>
+
+    <!-- Bootstrap core CSS -->
+    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='bootstrap.min.css') }}">
+
+    <!-- Custom styles -->
+    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
+
+  </head>
+
+  <body>
+    <!-- Website Header -->
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-blue">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <h1 class="navbar-brand">Catalog App</h1>
+        </div>
+        {%if 'username' not in session %}
+        <a class="btn btn-primary" href="{{url_for('showLogin')}}" role="button">Login</a>
+  			{% else %}
+        <a class="btn btn-primary" href="{{url_for('disconnect')}}" role="button">Logout</a>
+  			{% endif %}
+      </div>
+    </nav>
+    <br />
+    <div class="container jumbotron">
+      <div class="row">
+         <form method="POST">
+           <h3>Add Item:</h3>
+             <div class="form-group col-6">
+               <label for="name">Name</label><br />
+               <input id="name" name="name" type="text">
+             </div>
+
+             <div class="form-group col-6">
+               <label for="description">Description</label><br />
+               <textarea name="description" id="description"></textarea>
+             </div>
+
+             <div class="form-group col-6">
+               <label for="category_id">Choose category</label><br />
+               <select id="categories" name="category_id">
+                 {% for category in categories %}
+                 <option value="{{category.id}}">{{category.name}}</option>
+                 {% endfor %}
+                </select>
+             </div>
+           <br />
+             <div class="form-group">
+               <input type="submit" class="btn btn-primary" value="submit" />
+             </div>
+
+         </form>
+       </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="py-5 bg-blue navbar-fixed-bottom">
+      <div class="container">
+        <p class="m-0 text-center text-white">Copyright &copy; Zeina Kittaneh 2019</p>
+      </div>
+    </footer>
+
+  </body>
+
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+      <meta name="author" content="Zeina Kittaneh">
+
+      <title>Home</title>
+
+      <!-- Bootstrap core CSS -->
+      <link rel=stylesheet type=text/css href="{{ url_for('static', filename='bootstrap.min.css') }}">
+      <!-- Custom styles -->
+      <link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
+
+    </head>
+
+  <body>
+    <!-- Website Header -->
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-blue">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <h1 class="navbar-brand">Catalog App</h1>
+        </div>
+        {%if 'username' not in session %}
+        <a class="btn btn-primary" href="{{url_for('showLogin')}}" role="button">Login</a>
+  			{% else %}
+        <a class="btn btn-primary" href="{{url_for('disconnect')}}" role="button">Logout</a>
+  			{% endif %}
+      </div>
+    </nav>
+    <br />
+    <div class="container jumbotron">
+      <div class="container jumbotron">
+        <h4>Name : </h4>
+        <p>{{ item.name }}</p>
+        <h4>Description : </h4>
+        <p>{{ item.description }}</p>
+      </div>
+
+      <a href="/catalog/{{category_name}}/items/{{item.name}}/edit">Edit Item</a>
+      |<a href="/catalog/{{item.name}}/delete">Delete Item</a>
+
+    </div>
+
+    <!-- Footer -->
+    <footer class="py-5 bg-blue navbar-fixed-bottom">
+      <div class="container">
+        <p class="m-0 text-center text-white">Copyright &copy; Zeina Kittaneh 2019</p>
+      </div>
+    </footer>
+
+  </body>
+
+</html>
