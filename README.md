@@ -29,7 +29,7 @@ use these commands:
 3. Run main python project
 `python catalog.py`
 
-4. through your server, access port 8000 to see the application running:
+4. Through your server, access port 8000 to see the application running:
 example: `http://localhost:8000/catalog/`
 
 ## License
