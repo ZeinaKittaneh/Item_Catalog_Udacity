@@ -9,6 +9,9 @@ Base = declarative_base()
 
 
 class User(Base):
+    '''
+    Registered user information is stored in db
+    '''
     __tablename__ = 'user'
 
     id = Column(Integer, primary_key=True)
@@ -18,10 +21,13 @@ class User(Base):
 
 
 class Category(Base):
+    '''
+    store information about each category
+    '''
     __tablename__ = 'category'
 
     id = Column(Integer, primary_key=True)
-    name = Column(String(250), nullable=False)
+    name = Column(String(250), nullable=False, unique=True)
 
     @property
     def serialize(self):
@@ -33,9 +39,12 @@ class Category(Base):
 
 
 class CategoryItem(Base):
+    '''
+    store items related to each category
+    '''
     __tablename__ = 'category_item'
 
-    name = Column(String(80), nullable=False)
+    name = Column(String(80), nullable=False, unique=True)
     id = Column(Integer, primary_key=True)
     description = Column(String(250))
     created_at = Column(TIMESTAMP, nullable=False)

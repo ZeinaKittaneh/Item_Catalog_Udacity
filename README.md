@@ -13,9 +13,7 @@ and Flask-GoogleLogin
 use these commands:
 
 `pip install Flask`
-
 `pip install SQLAlchemy`
-
 `pip install Flask-GoogleLogin`
 
 ## Running the app
@@ -28,9 +26,6 @@ use these commands:
 
 3. Run main python project
 `python catalog.py`
-
-4. Through your server, access port 8000 to see the application running:
-example: `http://localhost:8000/catalog/`
 
 ## License
 This project is licensed under the MIT License - see the [LICENSE](https://github.com/arrickx/Item-Catalog-Application/blob/master/LICENSE) file for details.
