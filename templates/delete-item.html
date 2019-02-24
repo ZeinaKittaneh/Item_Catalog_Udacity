@@ -34,6 +34,15 @@
     </nav>
     <br />
     <div class="container jumbotron">
+      {% with messages = get_flashed_messages() %}
+        {% if messages %}
+          <ul class=flashes>
+          {% for message in messages %}
+            <li>{{ message }}</li>
+          {% endfor %}
+          </ul>
+        {% endif %}
+      {% endwith %}
       <form method="post">
         Are you sure youu want to delete "{{itemToDelete.name}}"?<br /><br />
         <button class="btn btn-danger" href="/catalog/{{itemToDelete.name}}/delete"
@@ -42,7 +51,7 @@
     </div>
 
     <!-- Footer -->
-    <footer class="py-5 bg-blue navbar-fixed-bottom">
+    <footer class="py-5 bg-blue">
       <div class="container">
         <p class="m-0 text-center text-white">Copyright &copy; Zeina Kittaneh 2019</p>
       </div>
